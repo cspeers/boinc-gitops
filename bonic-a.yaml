@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: boinc-client
+  namespace: benchmarking
+spec:
+  selector:
+    matchLabels:
+      app: boinc-client
+      tier: backend
+      #replicas:
+  template:
+    metadata:
+      labels:
+        app: boinc-client
+        tier: backend
+    spec:
+      containers:
+        - name: boinc-client
+          image: boinc/client
+          imagePullPolicy: IfNotPresent
+          resources:
+              limits:
+                memory: "8Gi"
+                cpu: "400m"
+          env:
+           - name: BOINC_GUI_RPC_PASSWORD
+             value: "SaveTheWorld"
+           - name: BOINC_CMD_LINE_OPTIONS
+             value: "--allow_remote_gui_rpc --attach_project http://boinc.bakerlab.org/rosetta 2121422_2a20068eda42a9498b690d4719d64e0f"
+          # volumeMounts:
+          #   - name: results
+          #     mountPath: /results
+          #   - name: secrets
+          #     mountPath: /run/secrets
+          #   - name: project
+          #     mountPath: /home/boinc-serveradm/project
+          ports:
+            - name: boinc-rpc
+              containerPort: 31416
+      # volumes:
+      #   - name: results
+      #     emptyDir: {}
+      #   - name: secrets
+      #     emptyDir: {}
+      #   - name: project
+      #     emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: boinc-client
+spec:
+  selector:
+    app: boinc-client
+    tier: backend
+  ports:
+  - name: boinc-rpc
+    protocol: TCP
+    port: 31416
+    targetPort: boinc-rpc
+    nodePort: 31416
+  type: NodePort
