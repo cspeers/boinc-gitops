@@ -15,13 +15,17 @@ spec:
   selector:
     matchLabels:
       app: fahclient
+      tier: backend
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
         app: fahclient
+        tier: backend
     spec:
+      nodeSelector:
+        juju-application: kubernetes-worker
       containers:
       - args:
         - -v
@@ -33,6 +37,7 @@ spec:
         - --web-enable=true
         - --command-enable=false
         - --run-as=nobody
+        - --user=Avanade
         command:
         - /shared/usr/bin/FAHClient
         image: ubuntu:xenial
@@ -52,7 +57,7 @@ spec:
         resources:
             limits:
               memory: "8Gi"
-              cpu: "350m"          
+              cpu: "250m"          
         volumeMounts:
         - mountPath: /shared
           name: shared
@@ -90,8 +95,6 @@ spec:
       volumes:
       - emptyDir: {}
         name: shared
-      nodeSelector:
-        juju-application: kubernetes-worker
 ---
 apiVersion: v1
 kind: Service
@@ -101,6 +104,7 @@ metadata:
 spec:
   selector:
     app: fahclient
+    tier: backend
   ports:
   - name: web-ui
     protocol: TCP
