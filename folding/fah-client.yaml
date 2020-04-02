@@ -32,7 +32,7 @@ spec:
         - --command-port=36330
         - --team=47180
         - --run-as=nobody
-        - --user=Avanade
+        - --user=AvanadeSV5
         - --allow=0/0
         - --web-allow=0/0
         - --command-allow-no-pass=0/0        
@@ -55,7 +55,7 @@ spec:
         resources:
             limits:
               memory: "8Gi"
-              cpu: "16"
+              cpu: "12"
             requests:
               cpu: "800m"
         volumeMounts:
