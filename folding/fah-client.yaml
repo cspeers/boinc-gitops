@@ -33,9 +33,9 @@ spec:
         - --team=0
         - --run-as=nobody
         - --user=Avanade
-        - --allow 0/0
-        - --web-allow 0/0
-        - --command-allow-no-pass 0/0        
+        - --allow=0/0
+        - --web-allow=0/0
+        - --command-allow-no-pass=0/0        
         command:
         - /shared/usr/bin/FAHClient
         image: ubuntu:bionic
