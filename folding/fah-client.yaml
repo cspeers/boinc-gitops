@@ -30,7 +30,7 @@ spec:
         - --web-enable=true
         - --command-enable=true
         - --command-port=36330
-        - --team=0
+        - --team=47180
         - --run-as=nobody
         - --user=Avanade
         - --allow=0/0
