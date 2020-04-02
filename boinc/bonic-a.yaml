@@ -26,9 +26,11 @@ spec:
           image: boinc/client
           imagePullPolicy: IfNotPresent
           resources:
-              limits:
-                memory: "8Gi"
-                cpu: "900mi"
+            limits:
+              memory: "8Gi"
+              cpu: "16"
+            requests:
+              cpu: "900m"
           env:
            - name: BOINC_GUI_RPC_PASSWORD
              value: "SaveTheWorld"
