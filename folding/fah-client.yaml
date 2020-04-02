@@ -6,18 +6,13 @@ metadata:
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  labels:
-    app: fahclient
   name: fahclient
   namespace: foldingathome
 spec:
-  # replicas: 1
   selector:
     matchLabels:
       app: fahclient
       tier: backend
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -26,21 +21,20 @@ spec:
     spec:
       nodeSelector:
         juju-application: kubernetes-worker
-      containers:
+      containers:     
       - args:
         - -v
         - --gpu=false
         - --power=full
-        - --cpus=8
-        - --fold-anon=true
-        - --gui-enabled=true
+        - --gui-enabled=false
         - --web-enable=true
-        - --command-enable=false
+        - --command-enable=true
+        - --team=0
         - --run-as=nobody
         - --user=Avanade
         command:
         - /shared/usr/bin/FAHClient
-        image: ubuntu:xenial
+        image: ubuntu:bionic
         name: fahclient
         securityContext:
           allowPrivilegeEscalation: false
@@ -75,7 +69,7 @@ spec:
           value: v7.4
         - name: package_name
           value: fahclient_7.4.4_amd64.deb
-        image: ubuntu:xenial
+        image: ubuntu:bionic
         name: install-fah
         resources:
           limits:
@@ -107,13 +101,13 @@ spec:
     tier: backend
   ports:
   - name: web-ui
+    nodePort: 31379
+    port: 7379
     protocol: TCP
-    port: 3
     targetPort: web-ui
-    nodePort: 31739
   - name: daemon
-    protocol: TCP
+    nodePort: 31330
     port: 36330
+    protocol: TCP
     targetPort: daemon
-    nodePort: 31330    
   type: NodePort

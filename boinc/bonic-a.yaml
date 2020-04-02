@@ -13,7 +13,6 @@ spec:
     matchLabels:
       app: boinc-client
       tier: backend
-      #replicas:
   template:
     metadata:
       labels:
