@@ -28,7 +28,7 @@ spec:
           resources:
               limits:
                 memory: "8Gi"
-                cpu: "950mi"
+                cpu: "900mi"
           env:
            - name: BOINC_GUI_RPC_PASSWORD
              value: "SaveTheWorld"
